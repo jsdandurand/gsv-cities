@@ -3,11 +3,11 @@ from torch.utils.data.dataloader import DataLoader
 from torchvision import transforms as T
 
 from dataloaders.train.GSVCitiesDataset import GSVCitiesDataset
-from dataloaders.val.PittsburghDataset import PittsburghDataset
-from dataloaders.val.MapillaryDataset import MSLS
-from dataloaders.val.NordlandDataset import NordlandDataset
-from dataloaders.val.SPEDDataset import SPEDDataset
-
+# from dataloaders.val.PittsburghDataset import PittsburghDataset
+# from dataloaders.val.MapillaryDataset import MSLS
+# from dataloaders.val.NordlandDataset import NordlandDataset
+# from dataloaders.val.SPEDDataset import SPEDDataset
+from dataloaders.val.CrossSeasonDataset import CrossSeasonDataset
 
 from prettytable import PrettyTable
 
@@ -57,7 +57,7 @@ class GSVCitiesDataModule(pl.LightningDataModule):
                  mean_std=IMAGENET_MEAN_STD,
                  batch_sampler=None,
                  random_sample_from_each_place=True,
-                 val_set_names=['pitts30k_val', 'msls_val']
+                 val_set_names=['crossseason']
                  ):
         super().__init__()
         self.batch_size = batch_size
@@ -109,17 +109,20 @@ class GSVCitiesDataModule(pl.LightningDataModule):
             # load validation sets (pitts_val, msls_val, ...etc)
             self.val_datasets = []
             for valid_set_name in self.val_set_names:
-                if 'pitts30k' in valid_set_name.lower():
-                    self.val_datasets.append(PittsburghDataset(which_ds=valid_set_name,
-                        input_transform=self.valid_transform))
-                elif valid_set_name.lower() == 'msls_val':
-                    self.val_datasets.append(MSLS(
-                        input_transform=self.valid_transform))
-                elif valid_set_name.lower() == 'nordland':
-                    self.val_datasets.append(NordlandDataset(
-                        input_transform=self.valid_transform))
-                elif valid_set_name.lower() == 'sped':
-                    self.val_datasets.append(SPEDDataset(
+                #if 'pitts30k' in valid_set_name.lower():
+                #     self.val_datasets.append(PittsburghDataset(which_ds=valid_set_name,
+                #         input_transform=self.valid_transform))
+                # elif valid_set_name.lower() == 'msls_val':
+                #     self.val_datasets.append(MSLS(
+                #         input_transform=self.valid_transform))
+                # elif valid_set_name.lower() == 'nordland':
+                #     self.val_datasets.append(NordlandDataset(
+                #         input_transform=self.valid_transform))
+                # elif valid_set_name.lower() == 'sped':
+                #     self.val_datasets.append(SPEDDataset(
+                #         input_transform=self.valid_transform))
+                if valid_set_name.lower() == 'crossseason':
+                    self.val_datasets.append(CrossSeasonDataset(
                         input_transform=self.valid_transform))
                 else:
                     print(
